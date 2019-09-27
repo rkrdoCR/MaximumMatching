@@ -97,8 +97,18 @@ A continuación se presentan algunos algoritmos para resolver el problema de apa
 \section{Resolver caso} \noindent
 
 \begin{center}
+\begin{tikzpicture}
+\graph[counterclockwise=6,
+        empty nodes, nodes={circle,draw, minimum size=0.01cm}] {
+a[fill=blue],  b[fill=red], c[fill=red]
+  };
+\draw (a) edge[red, thick] (b);
+\draw (b) edge[red, thick] (c);
+\draw (c) edge[blue, thick] (a);
+\end{tikzpicture}
+
 \begin{tikzpicture}[node distance = {2.5cm and 5cm}, v/.style = {draw, circle}]
-   \graph[nodes={circle, draw}, grow right=2.25cm, branch down=1.75cm] {subgraph I_nm [V={A,B,C,D,E}, W={F,G,H,I,J}];
+   \graph[nodes={circle, minimum size=1cm, draw}, grow right=5cm, branch down=2.5cm] {subgraph I_nm [V={A,B,C,D,E}, W={F,G,H,I,J}];
   A -- {F,I};
   B -- {G,H,I,J};
   C -- {G};
