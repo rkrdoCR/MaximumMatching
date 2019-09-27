@@ -97,6 +97,17 @@ A continuación se presentan algunos algoritmos para resolver el problema de apa
 \section{Resolver caso} \noindent
 
 \begin{center}
+\begin{tikzpicture}[node distance = {2.5cm and 5cm}, v/.style = {draw, circle}]
+   \graph[nodes={circle, draw}, grow right=2.25cm, branch down=1.75cm] {subgraph I_nm [V={A,B,C,D,E}, W={F,G,H,I,J}];
+  A -- {F,I};
+  B -- {G,H,I,J};
+  C -- {G};
+  D -- {H};
+  E -- {F};aro
+};
+\end{tikzpicture}
+
+
 \begin{tikzpicture}[%
   VertexStyle/.style={shape=circle,draw=black,very thick}]
   \Vertex[L=$A$]{a0}          % place a vertex labelled A
