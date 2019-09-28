@@ -2,14 +2,15 @@
 
 \usepackage{tikz}
 \usetikzlibrary{graphs, graphs.standard, quotes}
+\usetikzlibrary{positioning, arrows, automata}
 \usepackage{tkz-berge}
 \usepackage{graphicx}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{algorithmic}
 \usepackage{algorithm2e}
 \usepackage[utf8]{inputenc}
-\usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage{float}
 \renewcommand{\familydefault}{\rmdefault}
@@ -48,144 +49,69 @@ Mas formalmente \cite{butenko2003maximum} define un pareo como un conjunto $M$ c
 Una $cobertura\; de\; vertices\; V'$ es un subconjunto de $V$ tal que cada arista $(i,j) \in E$ tiene al menos un vértice en $V'$. El problema de cobertura mínima de vértices consiste en encontrar una cobertura de vértices con la mínima cardinalidad\cite{butenko2003maximum}.
 \subsection{Relación entre estos problemas} \noindent 
 El teorema de König relaciona estos dos problemas ya que en el se establece que la cardinalidad un apareamiento máximo de aristas en un grafo bipartito es igual a la cardinalidad de la cobertura mínima de vértices\cite{rizzi2000short}. 
-\end{section}
-
-\begin{center}
-\begin{tikzpicture}[node distance = {1.0cm and 1.5cm}, v/.style = {draw, circle}]
-  \graph[nodes={circle, draw}, grow right=2.25cm, branch down=1.75cm]{
-    A -- ["1"] C -- ["3"] E,
-    B -- ["1",swap] D -- ["4",swap] F,
-    B -- ["2"] A,
-    C -- ["2"] {D,B},
-    D -- ["3",swap] E -- ["1"] F
-  };
-\end{tikzpicture}
-\end{center}
-
-\section{Algoritmos} \noindent 
-A continuación se presentan algunos algoritmos para resolver el problema de apareamiento máximo de aristas.
-
-\subsection{Algoritmos voraz}
-\begin{algorithmic}
-\STATE $i\gets 10$
-\IF {$i\geq 5$} 
-        \STATE $i\gets i-1$
-\ELSE
-        \IF {$i\leq 3$}
-                \STATE $i\gets i+2$
-        \ENDIF
-\ENDIF 
-\end{algorithmic}
-\subsection{Algoritmo Hopcroft–Karp}
-\begin{algorithm}[H]
-\SetAlgoLined
-\KwResult{Write here the result }
- initialization\;
- \While{While condition}{
-  instructions\;
-  \eIf{condition}{
-   instructions1\;
-   instructions2\;
-   }{
-   instructions3\;
-  }
- }
- \caption{How to write algorithms}
-\end{algorithm}
-\section{Aplicaciones} \noindent
-
-\section{Resolver caso} \noindent
-
-\begin{center}
-\begin{tikzpicture}
-\graph[counterclockwise=6,
-        empty nodes, nodes={circle,draw, minimum size=0.01cm}] {
-a[fill=blue],  b[fill=red], c[fill=red]
-  };
-\draw (a) edge[red, thick] (b);
-\draw (b) edge[red, thick] (c);
-\draw (c) edge[blue, thick] (a);
-\end{tikzpicture}
-
-\begin{tikzpicture}[node distance = {2.5cm and 5cm}, v/.style = {draw, circle}]
-   \graph[nodes={circle, minimum size=1cm, draw}, grow right=5cm, branch down=2.5cm] {subgraph I_nm [V={A,B,C,D,E}, W={F,G,H,I,J}];
-  A -- {F,I};
-  B -- {G,H,I,J};
-  C -- {G};
-  D -- {H};
-  E -- {F};aro
-};
-\end{tikzpicture}
-
-
-\begin{tikzpicture}[%
-  VertexStyle/.style={shape=circle,draw=black,very thick}]
-  \Vertex[L=$A$]{a0}          % place a vertex labelled A
-  \NO[unit=2,L=$B$](a0){a1}   % place B north of A=a0
-  \NO[unit=2,L=$C$](a1){a2}   % place C north of B=a1
-  \WE[unit=4,L=$D$](a0){b0}   % place D west of A=a0
-  \NO[unit=2,L=$E$](b0){b1}   % place E north of D=b0
-  \NO[unit=2,L=$F$](b1){b2}   % place F north of E=b1
-  \EdgeFromOneToSel{a}{b}{1}{0}
-  \EdgeFromOneToSel{a}{b}{0}{1}
-  \EdgeFromOneToSel{a}{b}{1}{1}
-  \EdgeFromOneToSel[label={$1,2$}]{a}{b}{1}{2}
-  \EdgeFromOneToSel[label={$1,3$}]{a}{b}{2}{1}
-  \EdgeFromOneToSel[label={$2,2$}]{a}{b}{2}{2}
-\end{tikzpicture}
-
-\begin{tikzpicture}
-   \begin{scope}[rotate=90]
-       \SetVertexMath
-       \grEmptyLadder[RA=2,RB=4]{5}   
-   \end{scope}
-    \Edges(b2,a0,b0,a1,b2,a3,b1,a2)
-\end{tikzpicture} 
-\hspace{1cm}
-\begin{tikzpicture}
-   \begin{scope}[rotate=90]
-       \SetVertexNoLabel  
-       \grEmptyLadder[RA=2,RB=4]{5}   
-   \end{scope}
-    \Edges(b2,a0,b0,a1,b2,a3,b1,a2)
-\end{tikzpicture} 
-
-\begin{tikzpicture}
-   \begin{scope}[rotate=90]
-      \GraphInit[vstyle=Simple]
-       \grEmptyLadder[RA=2,RB=4]{5}   
-   \end{scope}
-    \Edges(b2,a0,b0,a1,b2,a3,b1,a2)
-\end{tikzpicture}
-\hspace{1cm}
-\begin{tikzpicture}
-  \GraphInit[vstyle=Shade]
-  \grPath[form=1,RA=2]{5}
-  \grPath[form=1,prefix=b,RA=2,RS=4]{5}
-  \EdgeFromOneToSel{a}{b}{0}{0,3}
-  \EdgeFromOneToSel{a}{b}{1}{0,3}
-  \EdgeFromOneToSel{a}{b}{3}{3}
-  \EdgeFromOneToSel{a}{b}{4}{2,3}    
-\end{tikzpicture}
-\end{center}
 \begin{center}
 \begin{figure}[h]
 \centering
-    \begin{tabularx}{0.8\textwidth}{*{2}{>{\centering\arraybackslash}X}}
+\captionsetup{justification=centering}
+\includegraphics[width=0.50\textwidth]{images/Konigs-theorem-graph.png}
+\caption*{\footnotesize Figura 1. Grafo bipartito con apareamiento máximo de aristas \\y cobertura mínima de vértices, ambos de tamaño 6}
+\end{figure}
+\end{center}
+\end{section}
+
+\section{Algoritmos} \noindent 
+A continuación se presentan dos algoritmos para resolver el problema de apareamiento máximo de aristas.
+
+\subsection{Algoritmos voraz}
+El siguiente algoritmo encuentra aristas diferentes que no comparten vértices pero no necesariamente encuentra el apareamiento máximo de aristas.
+\begin{center}
+\begin{algorithmic}[1]
+\STATE $M\gets \emptyset$
+\WHILE {\textit{mas aristas se pueden agregar}} 
+        \STATE $e\gets$ \textit{una arista que no comparta vértices con otra(s) en M}
+        \STATE $M\gets M \cup e$
+\ENDWHILE
+\RETURN $M$
+\end{algorithmic}
+\end{center}
+
+\begin{center}
+\begin{figure}[h]
+\centering
+    \begin{tabularx}{0.8\textwidth}{*{3}{>{\centering\arraybackslash}X}}
+    \begin{tikzpicture}[
+every edge/.style = {draw=black,very thick},
+ vrtx/.style args = {#1/#2}{% 
+      circle, draw, thick, fill=white,
+      minimum size=5mm}
+                    ]
+\node(A) [vrtx=left/1] at (0, 5) {};
+\node(B) [vrtx=left/2] at (0, 3) {};
+\node(C) [vrtx=left/4] at (1, 1) {};
+\node(D) [vrtx=left/3] at (-1,1) {};
+%
+\path   (A) edge (B)
+        (B) edge (C)        
+        (B) edge (D);
+\end{tikzpicture}
+
+    \caption*{\scriptsize Grafo original} 
+    &
 \begin{tikzpicture}[
 every edge/.style = {draw=black,very thick},
  vrtx/.style args = {#1/#2}{% 
       circle, draw, thick, fill=white,
-      minimum size=5mm, label=#1:#2}
+      minimum size=5mm}
                     ]
-\node(A) [vrtx=left/1] at (1, 1) {};
-\node(B) [vrtx=left/2] at (0, 0) {};
-\node(C) [vrtx=left/3] at (1,-1) {};
+\node(A) [vrtx=left/1] at (0, 5) {};
+\node(B) [vrtx=left/2] at (0, 3) {};
+\node(C) [vrtx=left/4] at (1, 1) {};
+\node(D) [vrtx=left/3] at (-1,1) {};
 %
-\path   (A) edge (B)
-        (B) edge (C);
+\path   (B) edge [color=red, line width=1.3pt] (D);
 \end{tikzpicture}
-    \caption*{Figure 1}  
+\captionsetup{justification=centering}
+    \caption*{\scriptsize Maximal pero no máximo}  
     &   
 \begin{tikzpicture}[
 every edge/.style = {draw=black,very thick},
@@ -193,21 +119,170 @@ every edge/.style = {draw=black,very thick},
       circle, draw, thick, fill=white,
       minimum size=5mm}
                     ]
-\node (A) [vrtx=left/2]     at ( 0, 0) {};
-\node (B) [vrtx=left/4]     at (-1, 1) {};
-\node (C) [vrtx=right/6]    at ( 1, 1) {};
-\node (D) [vrtx=right/8]    at ( 1,-1) {};
-\node (E) [vrtx=left/10]    at (-1,-1) {};
- %
-\path   (A) edge (B)
-        (A) edge (C)
-        (A) edge (D)
-        (A) edge (E);
+\node(A) [vrtx=left/1] at (0, 5) {};
+\node(B) [vrtx=left/2] at (0, 3) {};
+\node(C) [vrtx=left/4] at (1, 1) {};
+\node(D) [vrtx=left/3] at (-1,1) {};
+%
+\path   (A) edge [color=red, line width=1.3pt] (B)
+        (C) edge [color=red, line width=1.3pt] (D);
 \end{tikzpicture}
-\caption*{Figure 2}  
+\caption*{\scriptsize Apareamiento máximo}  
     \end{tabularx}
 \end{figure}
 \end{center}
+
+\subsection{Algoritmo Hopcroft–Karp}
+Este algoritmo utiliza \textit{búsqueda por profundidad} para construir un grafo de niveles de manera alterna (se va construyendo el grafo visitando nodos de ambos subconjuntos) a partir de los vértices que no están conectados por una arista y hasta encontrar vértices ``libres". Este grafo luego se recorre con \textit{búsqueda a profundidad} a partir de los vértices que no están conectados por una arista con el fin de obtener un camino de aumentación (caminos mas cortos en el conjunto de vértices disjuntos)
+\begin{center}
+\begin{algorithmic}[1]
+\STATE $M\gets \emptyset$
+\REPEAT
+	\STATE $P\gets \{p_1, p_2, ..., p_k\}$
+	\STATE $M\gets M \ominus \{p_1 \cup p_2 \cup ... \cup p_k\}$
+\UNTIL {$P \geq 0$}
+\RETURN $M$
+\end{algorithmic}
+\end{center}
+La siguiente es una version mas descriptiva del algoritmo:
+\begin{center}
+\begin{algorithmic}[1]
+\STATE $M\gets \emptyset$
+\REPEAT
+	\STATE \textit{búsqueda por anchura(B.F.S) para construir el grafo de niveles alternos con raíces en los vértices no apareados del conjunto V}
+	\STATE \textit{Aumentar M con el conjunto maximal de caminos mas cortos obtenido al aplicar búsqueda por profundidad(D.F.S) en el grafo de niveles}
+\UNTIL {\textit{hasta que no haya mas caminos de aumentacion}}
+\RETURN $M$
+\end{algorithmic}
+\end{center}
+
+
+
+
+\section{Aplicaciones} \noindent
+
+\section{Caso -- Hopcroft-Karp} \noindent
+El algoritmo de Hopcroft-Karp para grafos bipartitos, utiliza \textit{búsqueda por profundidad} para construir un grafo de niveles de manera alterna (se va construyendo el grafo visitando nodos de ambos subconjuntos) a partir de los vértices que no están conectados por una arista y hasta encontrar vértices ``libres". Este grafo luego se recorre con \textit{búsqueda a profundidad} a partir de los vértices que no están conectados por una arista.
+
+\subsection{Inicialización}
+Se define e inicializan los conjuntos $M$ que almacenara las aristas que forman parte del \textit{apareamiento máximo} y $F$ que almacenara a los vértices del conjunto $W$ y que servirá para llevar control de los nodos que se visitan en ese conjunto.
+\begin{center}
+$M=\emptyset$; $F=\emptyset$;
+\end{center}
+
+\subsection{Primera iteración} \noindent
+
+\begin{figure}[htb]
+    \centering
+    \begin{minipage}{.45\linewidth}
+        \begin{subfigure}[t]{.9\linewidth}
+            \begin{tikzpicture}[semithick]
+    \tikzstyle{every state}=[
+        draw = black,
+        thin,
+        minimum size = 6mm
+    ]
+    \begin{scope}[node distance=2cm and .5cm, every node/.style=state]
+      \node (a) {\small $a$};
+      \node (b) [right=of a] {\small $b$};
+      \node (c) [right=of b] {\small $c$};
+      \node (d) [right=of c] {\small $d$};
+      \node (e) [right=of d] {\small $e$};
+      \node (f) [below=of a] {\small $f$};
+      \node (g) [below=of b] {\small $g$};
+      \node (h) [below=of c] {\small $h$};
+      \node (i) [below=of d] {\small $i$};
+      \node (j) [below=of e] {\small $j$};
+    \end{scope}
+    \path[-] (a) edge [color=red, line width=1.3pt] (f)
+    		 (a) edge (i)
+             (b) edge [color=red, line width=1.3pt] (g)
+             (b) edge (h)
+             (b) edge (i)
+             (b) edge (j)
+             (c) edge (g)
+             (d) edge [color=red, line width=1.3pt] (h)
+             (e) edge (f)
+             (d) edge (i);
+\end{tikzpicture}
+            \caption{Detail van een route}
+            \label{fig:weather_filter1}
+        \end{subfigure} \\\\
+        \begin{subfigure}[b]{.9\linewidth}
+            \begin{tikzpicture}[semithick]
+    \tikzstyle{every state}=[
+        draw = black,
+        thin,
+        minimum size = 6mm
+    ]
+    \begin{scope}[node distance=2cm and .5cm, every node/.style=state]
+      \node (a) {\small $a$};
+      \node (b) [right=of a] {\small $b$};
+      \node (c) [right=of b] {\small $c$};
+      \node (d) [right=of c] {\small $d$};
+      \node (e) [right=of d] {\small $e$};
+      \node (f) [below=of a] {\small $f$};
+      \node (g) [below=of b] {\small $g$};
+      \node (h) [below=of c] {\small $h$};
+      \node (i) [below=of d] {\small $i$};
+      \node (j) [below=of e] {\small $j$};
+    \end{scope}
+    \path[-] (a) edge [color=red, line width=1.3pt] (f)
+    		 (a) edge (i)
+             (b) edge [color=red, line width=1.3pt] (g)
+             (b) edge (h)
+             (b) edge (i)
+             (b) edge (j)
+             (c) edge (g)
+             (d) edge [color=red, line width=1.3pt] (h)
+             (e) edge (f)
+             (d) edge (i);
+\end{tikzpicture}
+            \caption{Detail van een route}
+            \label{fig:weather_filter2}
+        \end{subfigure} 
+    \end{minipage}
+\qquad
+    \begin{minipage}{.45\linewidth}
+            \begin{subfigure}[t]{.9\linewidth}
+                \begin{tikzpicture}[semithick]
+    \tikzstyle{every state}=[
+        draw = black,
+        thin,
+        minimum size = 8mm
+    ]
+    \begin{scope}[node distance=1cm and 3cm, every node/.style=state]
+      \node (a) [label=above:\Large V] {$A$};
+      \node (b) [below=of a] {$B$};
+      \node (c) [below=of b] {$C$};
+      \node (d) [below=of c] {$D$};
+      \node (e) [below=of d] {$E$};
+      
+      \node (f) [right=of a, label=above:\Large W] {$F$};
+      \node (g) [right=of b] {$G$};
+      \node (h) [right=of c] {$H$};
+      \node (i) [right=of d] {$I$};
+      \node (j) [right=of e] {$J$};
+    \end{scope}
+    \path[-] (a) edge [color=red, line width=1.3pt] (f)
+    		 (a) edge (i)
+             (b) edge [color=red, line width=1.3pt] (g)
+             (b) edge (h)
+             (b) edge (i)
+             (b) edge (j)
+             (c) edge (g)
+             (d) edge [color=red, line width=1.3pt] (h)
+             (e) edge (f)
+             (d) edge (i);
+\end{tikzpicture}
+                \caption{Weergave gezochte routes}
+                \label{fig:weather_activity}
+            \end{subfigure}
+        \end{minipage}
+    \caption{Many figures}
+\end{figure}
+
+
 
 \newpage
 \nocite{*}
