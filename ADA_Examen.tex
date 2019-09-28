@@ -177,27 +177,67 @@ Este algoritmo utiliza \textit{búsqueda por profundidad} para construir un graf
 \textbf{Redes neuronales artificiales}. Son modelos computacionales inspirados en el cerebro humano. Se componen de una gran cantidad de nodos conectados, cada uno de los cuales realiza una operación matemática simple. La salida de cada nodo está determinada por esta operación, así como por un conjunto de parámetros que son específicos de ese nodo. Al conectar estos nodos juntos y establecer cuidadosamente sus parámetros, se pueden aprender y calcular funciones muy complejas.
 
 \section{Caso -- Hopcroft-Karp} \noindent
-El algoritmo de Hopcroft-Karp para grafos bipartitos, utiliza \textit{búsqueda por profundidad} para construir un grafo de niveles de manera alterna (se va construyendo el grafo visitando nodos de ambos subconjuntos) a partir de los vértices que no están conectados por una arista y hasta encontrar vértices ``libres". Este grafo luego se recorre con \textit{búsqueda a profundidad} a partir de los vértices que no están conectados por una arista.
+Se toman los vértices libres de $V$ y se usan como fuente para hacer una \textit{búsqueda por anchura}. Esta búsqueda es especial en dos sentidos, primero en el nivel superior solo se usan aristas que no están en $M$, luego se alterna usando aristas de $M$ y las que están fuera de ese conjunto. En segundo lugar el recorrido se termina una vez que se alcanza un nivel en el que se localiza un vértice libre, que debido a la alternabilidad del recorrido, estará en el conjunto $W$.\\\\
+Luego se almacenan los vértices libres de $W$ en el conjunto $F$ que se utilizara en la siguiente operación que es la construcción de un camino de aumentacion utilizando \textit{búsqueda por profundidad}, que también es especial por que utiliza el mismo patrón de alternabilidad y ademas luego de que se usa un vértice o arista estos deben ser borrados, así como las aristas y vértices que queden huérfanos, esto garantiza que el conjunto de caminos que se obtienen es de vértices disjuntos.\\\\
+El grafo a examinar es el siguiente:
+\begin{center}
+\begin{tikzpicture}[semithick]
+    \tikzstyle{every state}=[
+        draw = black,
+        thin,
+        minimum size = 8mm
+    ]
+    \begin{scope}[node distance=1cm and 3cm, every node/.style=state]
+      \node (a) [label=above:\Large V] {$A$};
+      \node (b) [below=of a] {$B$};
+      \node (c) [below=of b] {$C$};
+      \node (d) [below=of c] {$D$};
+      \node (e) [below=of d] {$E$};
+      
+      \node (f) [right=of a, label=above:\Large W] {$F$};
+      \node (g) [right=of b] {$G$};
+      \node (h) [right=of c] {$H$};
+      \node (i) [right=of d] {$I$};
+      \node (j) [right=of e] {$J$};
+    \end{scope}
+    \path[-] (a) edge (f)
+    		 (a) edge (i)
+             (b) edge (g)
+             (b) edge (h)
+             (b) edge (i)
+             (b) edge (j)
+             (c) edge (g)
+             (d) edge (h)
+             (e) edge (f);
+\end{tikzpicture}
+\end{center}
 
 \subsection{Inicialización}
-Se define e inicializan los conjuntos $M$ que almacenara las aristas que forman parte del \textit{apareamiento máximo} y $F$ que almacenara a los vértices del conjunto $W$ y que servirá para llevar control de los nodos que se visitan en ese conjunto.
+Se inicializan los conjuntos $M$ que almacenara las aristas que forman parte del \textit{apareamiento máximo} y $F$ que almacenara a los vértices libres de $W$.
 \begin{center}
 $M=\emptyset$; $F=\emptyset$;
 \end{center}
 
 \subsection{Primera iteración} \noindent
-
-\begin{figure}[htb]
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, como $M$ esta vacío en la primera iteracion esto implica todos.\\
+\begin{center}
+\begin{figure}[!htb]
     \centering
     \begin{minipage}{.45\linewidth}
         \begin{subfigure}[t]{.9\linewidth}
+        
+    \centering
             \begin{tikzpicture}[semithick]
     \tikzstyle{every state}=[
-        draw = black,
-        thin,
-        minimum size = 6mm
+        circle,
+  		inner sep=0pt,
+  		text width=4mm,
+  		align=center,
+  		draw=black,
+  		fill=white,
+  		minimum size=6mm
     ]
-    \begin{scope}[node distance=2cm and .5cm, every node/.style=state]
+    \begin{scope}[node distance=1.5cm and .65cm, every node/.style=state]
       \node (a) {\small $a$};
       \node (b) [right=of a] {\small $b$};
       \node (c) [right=of b] {\small $c$};
@@ -209,28 +249,36 @@ $M=\emptyset$; $F=\emptyset$;
       \node (i) [below=of d] {\small $i$};
       \node (j) [below=of e] {\small $j$};
     \end{scope}
-    \path[-] (a) edge [color=red, line width=1.3pt] (f)
+    \path[-] (a) edge (f)
     		 (a) edge (i)
-             (b) edge [color=red, line width=1.3pt] (g)
+             (b) edge (g)
              (b) edge (h)
              (b) edge (i)
              (b) edge (j)
              (c) edge (g)
-             (d) edge [color=red, line width=1.3pt] (h)
-             (e) edge (f)
-             (d) edge (i);
+             (d) edge (h)
+             (e) edge (f);
 \end{tikzpicture}
-            \caption{Detail van een route}
+            \captionsetup{justification=centering}
+			\captionsetup{belowskip=0pt}
+    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vertices libres de $V$ como fuente, se almacenan los vértices libres del segundo nivel en $F=\{f,g,h,i,j\}$}
+    		\vspace{.5cm}
             \label{fig:weather_filter1}
         \end{subfigure} \\\\
         \begin{subfigure}[b]{.9\linewidth}
+        
+    \centering
             \begin{tikzpicture}[semithick]
     \tikzstyle{every state}=[
-        draw = black,
-        thin,
-        minimum size = 6mm
+        circle,
+  		inner sep=0pt,
+  		text width=4mm,
+  		align=center,
+  		draw=black,
+  		fill=white,
+  		minimum size=6mm
     ]
-    \begin{scope}[node distance=2cm and .5cm, every node/.style=state]
+    \begin{scope}[node distance=1.5cm and .65cm, every node/.style=state]
       \node (a) {\small $a$};
       \node (b) [right=of a] {\small $b$};
       \node (c) [right=of b] {\small $c$};
@@ -250,16 +298,261 @@ $M=\emptyset$; $F=\emptyset$;
              (b) edge (j)
              (c) edge (g)
              (d) edge [color=red, line width=1.3pt] (h)
-             (e) edge (f)
-             (d) edge (i);
+             (e) edge (f);
 \end{tikzpicture}
-            \caption{Detail van een route}
+            \captionsetup{justification=centering}
+			\captionsetup{belowskip=0pt}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{f,g,h,i,j\}$ como fuente para obtener el camino de aumentacion, por cada nodo procesado de $F$ se debe eliminar las aristas y los vértices que estas conectan, asi como vertices y aristas huerfanos. El camino de aumentacion obtenido es $P=\{f-a,g-b,h-d\}$}
             \label{fig:weather_filter2}
         \end{subfigure} 
     \end{minipage}
 \qquad
     \begin{minipage}{.45\linewidth}
             \begin{subfigure}[t]{.9\linewidth}
+            
+    \centering
+                \begin{tikzpicture}[semithick]
+    \tikzstyle{every state}=[
+        draw = black,
+        thin,
+        minimum size = 8mm
+    ]
+    \begin{scope}[node distance=1cm and 3cm, every node/.style=state]
+      \node (a) [label=above:\Large V] {$A$};
+      \node (b) [below=of a] {$B$};
+      \node (c) [below=of b, fill=yellow] {$C$};
+      \node (d) [below=of c] {$D$};
+      \node (e) [below=of d, fill=yellow] {$E$};
+      
+      \node (f) [right=of a, label=above:\Large W] {$F$};
+      \node (g) [right=of b] {$G$};
+      \node (h) [right=of c] {$H$};
+      \node (i) [right=of d, fill=yellow] {$I$};
+      \node (j) [right=of e, fill=yellow] {$J$};
+    \end{scope}
+    \path[-] (a) edge [color=red, line width=1.3pt] (f)
+    		 (a) edge (i)
+             (b) edge [color=red, line width=1.3pt] (g)
+             (b) edge (h)
+             (b) edge (i)
+             (b) edge (j)
+             (c) edge (g)
+             (d) edge [color=red, line width=1.3pt] (h)
+             (e) edge (f);
+\end{tikzpicture}
+                \captionsetup{justification=centering}
+			\captionsetup{belowskip=0pt}
+    		\caption{\footnotesize Después de la primera iteracion $M=\{f-a,g-b,h-d\}$. Las aristas incluidas hasta el momento en el apareamiento máximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
+                \label{fig:weather_activity}
+            \end{subfigure}
+        \end{minipage}
+\end{figure}
+\end{center}
+
+\noindent El resultado de la primera iteracion es:\\\\
+$M = M \oplus \{f-a,g-b,h-d\}$\\
+$M = \{f-a,g-b,h-d\}$
+
+\subsection{Segunda iteración} \noindent
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, despues de la primera iteracion esos vertices son $C$ y $E$. Cuando se hace la \textit{busqueda por anchura} se debe de transitar por las aristas que ya estan en el apareamiento maximo cuando la direccion es $W$ a $V$ y por las que no estan aun incluidas cuando es de $V$ a $W$. 
+
+\begin{center}
+\begin{figure}[!htb]
+    \centering
+    \begin{minipage}{.45\linewidth}
+        \begin{subfigure}[t]{.9\linewidth}        
+    \centering
+            \begin{tikzpicture}{every state}=[
+        circle,
+  		inner sep=0pt,
+  		text width=4mm,
+  		align=center,
+  		draw=black,
+  		fill=white,
+  		minimum size=6mm
+    ]
+    \begin{scope}[node every node/.style=state]
+		\node(c) [circle, fill=yellow] at (0, 4) {\small $c$};
+		\node(g) at (0, 3) {\small $g$};
+		\node(b) at (0, 2) {\small $b$};
+		\node(h) at (-1,1) {\small $h$};
+		\node(i) [circle, fill=yellow] at (0, 1) {\small $i$};
+		\node(j) [circle, fill=yellow] at (1 ,1) {\small $j$};
+				
+		\node(e) [circle, fill=yellow] at (2 ,4) {\small $e$};
+		\node(f) at (2 ,3) {\small $f$};
+		\node(a) at (2 ,2) {\small $a$};
+    \end{scope}
+		\path   (c) edge (g)
+  	 	     	(g) edge (b)        
+   			    (b) edge (h)
+   			    (b) edge (i)
+   			    (b) edge (j)
+   			    (e) edge (f)
+   			    (f) edge (a)
+   			    (a) edge [looseness=1.5,bend left=65] (i);
+	\end{tikzpicture}
+	\captionsetup{belowskip=0pt}
+            \captionsetup{justification=centering}
+    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vertices libres de $V$, que en esta iteracion corresponden a $C$ y $E$ como fuente, se almacenan los vértices libres del cuarto nivel en $F=\{i,j\}$}
+            \label{fig:weather_filter1}
+        \end{subfigure} \\\\
+        \begin{subfigure}[b]{.9\linewidth}
+        
+    \centering
+            \begin{tikzpicture}{every state}=[
+        circle,
+  		inner sep=0pt,
+  		text width=4mm,
+  		align=center,
+  		draw=black,
+  		fill=white,
+  		minimum size=6mm
+    ]
+    \begin{scope}[node every node/.style=state]
+		\node(c) at (0, 4) {\small $c$};
+		\node(g) at (0, 3) {\small $g$};
+		\node(b) at (0, 2) {\small $b$};
+		\node(h) at (-1,1) {\small $h$};
+		\node(i) at (0, 1) {\small $i$};
+		\node(j) at (1 ,1) {\small $j$};
+				
+		\node(e) at (2 ,4) {\small $e$};
+		\node(f) at (2 ,3) {\small $f$};
+		\node(a) at (2 ,2) {\small $a$};
+    \end{scope}
+		\path   (c) edge [color=red, line width=1.3pt] (g)
+  	 	     	(g) edge [color=red, line width=1.3pt] (b)        
+   			    (b) edge (h)
+   			    (b) edge [color=red, line width=1.3pt] (i)
+   			    (b) edge (j)
+   			    (e) edge (f)
+   			    (f) edge (a)
+   			    (a) edge [looseness=1.5,bend left=65] (i);
+	\end{tikzpicture}
+	\captionsetup{belowskip=0pt}
+            \captionsetup{justification=centering}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{i,j\}$ como fuente para obtener el camino de aumentacion, por cada nodo procesado de $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentacion obtenido en esta iteracion es $P\{i-b,b-g,g-c\}$}
+            \label{fig:weather_filter2}
+        \end{subfigure} 
+    \end{minipage}
+\qquad
+    \begin{minipage}{.45\linewidth}
+            \begin{subfigure}[t]{.9\linewidth}
+            
+    \centering
+                \begin{tikzpicture}[semithick]
+    \tikzstyle{every state}=[
+        draw = black,
+        thin,
+        minimum size = 8mm
+    ]
+    \begin{scope}[node distance=1cm and 3cm, every node/.style=state]
+      \node (a) [label=above:\Large V] {$A$};
+      \node (b) [below=of a] {$B$};
+      \node (c) [below=of b] {$C$};
+      \node (d) [below=of c] {$D$};
+      \node (e) [below=of d, fill=yellow] {$E$};
+      
+      \node (f) [right=of a, label=above:\Large W] {$F$};
+      \node (g) [right=of b] {$G$};
+      \node (h) [right=of c] {$H$};
+      \node (i) [right=of d] {$I$};
+      \node (j) [right=of e, fill=yellow] {$J$};
+    \end{scope}
+    \path[-] (a) edge [color=red, line width=1.3pt] (f)
+    		 (a) edge (i)
+             (b) edge (g)
+             (b) edge (h)
+             (b) edge [color=red, line width=1.3pt] (i)
+             (b) edge (j)
+             (c) edge [color=red, line width=1.3pt] (g)
+             (d) edge [color=red, line width=1.3pt] (h)
+             (e) edge (f);
+\end{tikzpicture}
+	\captionsetup{belowskip=0pt}
+                \captionsetup{justification=centering}
+    		\caption{\footnotesize Se realiza una diferencia simétrica entre lo que tiene $M$ y el camino de aumentacion obtenido $M=M \triangle P\{i-b,b-g,g-c\}$ obteniendo como resultado $M=\{f-a,h-d,i-b,g-c\}$.\\Las aristas incluidas hasta el momento en el apareamiento máximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
+                \label{fig:weather_activity}
+            \end{subfigure}
+        \end{minipage}
+\end{figure}
+\end{center}
+
+\subsection{Tercera iteración} \noindent
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, despues de la segunda iteracion, en este caso solo queda $E$. Cuando se hace la \textit{busqueda por anchura} se debe de transitar por las aristas que ya estan en el apareamiento maximo cuando la direccion es $W$ a $V$ y por las que no estan aun incluidas cuando es de $V$ a $W$. 
+
+\begin{center}
+\begin{figure}[!htb]
+    \centering
+    \begin{minipage}{.45\linewidth}
+        \begin{subfigure}[t]{.9\linewidth}        
+    \centering
+            \begin{tikzpicture}{every state}=[
+        circle,
+  		inner sep=0pt,
+  		text width=4mm,
+  		align=center,
+  		draw=black,
+  		fill=white,
+  		minimum size=6mm
+    ]
+    \begin{scope}[node every node/.style=state]
+		\node(e) [circle, fill=yellow] at (0, 5.10) {\small $e$};
+		\node(f) at (0, 4.25) {\small $f$};
+		\node(a) at (0, 3.40) {\small $a$};
+		\node(i) at (0 ,2.55) {\small $i$};
+		\node(b) at (0 ,1.70) {\small $b$};;
+		\node(j) [circle, fill=yellow] at (0 ,0.85) {\small $j$};
+    \end{scope}
+		\path   (e) edge (f)
+  	 	     	(f) edge (a)        
+   			    (a) edge (i)
+   			    (i) edge (b)
+   			    (b) edge (j);
+	\end{tikzpicture}
+	\captionsetup{belowskip=0pt}
+            \captionsetup{justification=centering}
+    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vertices libres de $V$, que en esta iteracion corresponde a $E$ como fuente, se almacenan los vértices libres del sext nivel en $F=\{j\}$}
+            \label{fig:weather_filter1}
+        \end{subfigure} \\\\
+        \begin{subfigure}[b]{.9\linewidth}
+        
+    \centering
+            \begin{tikzpicture}{every state}=[
+        circle,
+  		inner sep=0pt,
+  		text width=4mm,
+  		align=center,
+  		draw=black,
+  		fill=white,
+  		minimum size=6mm
+    ]
+    \begin{scope}[node every node/.style=state]
+		\node(e) at (0, 5.10) {\small $e$};
+		\node(f) at (0, 4.25) {\small $f$};
+		\node(a) at (0, 3.40) {\small $a$};
+		\node(i) at (0 ,2.55) {\small $i$};
+		\node(b) at (0 ,1.70) {\small $b$};
+		\node(j) at (0 ,0.85) {\small $j$};
+    \end{scope}
+		\path   (e) edge [color=red, line width=1.3pt] (f)
+  	 	     	(f) edge [color=red, line width=1.3pt] (a)        
+   			    (a) edge [color=red, line width=1.3pt] (i)
+   			    (i) edge [color=red, line width=1.3pt] (b)
+   			    (b) edge [color=red, line width=1.3pt] (j);
+	\end{tikzpicture}
+	\captionsetup{belowskip=0pt}
+            \captionsetup{justification=centering}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{j\}$ como fuente para obtener el camino de aumentacion, por cada nodo en $F$ se debe eliminar las aristas y los vértices que estas conectan, asi como vertices y aristas huerfanos. El camino de aumentacion obtenido en esta iteracion es $P\{a-f,a-i,b-i,b-j,e-f\}$}
+            \label{fig:weather_filter2}
+        \end{subfigure} 
+    \end{minipage}
+\qquad
+    \begin{minipage}{.45\linewidth}
+            \begin{subfigure}[t]{.9\linewidth}
+            
+    \centering
                 \begin{tikzpicture}[semithick]
     \tikzstyle{every state}=[
         draw = black,
@@ -279,25 +572,24 @@ $M=\emptyset$; $F=\emptyset$;
       \node (i) [right=of d] {$I$};
       \node (j) [right=of e] {$J$};
     \end{scope}
-    \path[-] (a) edge [color=red, line width=1.3pt] (f)
-    		 (a) edge (i)
-             (b) edge [color=red, line width=1.3pt] (g)
+    \path[-] (a) edge (f)
+    		 (a) edge [color=red, line width=1.3pt] (i)
+             (b) edge (g)
              (b) edge (h)
              (b) edge (i)
-             (b) edge (j)
-             (c) edge (g)
+             (b) edge [color=red, line width=1.3pt] (j)
+             (c) edge [color=red, line width=1.3pt] (g)
              (d) edge [color=red, line width=1.3pt] (h)
-             (e) edge (f)
-             (d) edge (i);
+             (e) edge [color=red, line width=1.3pt] (f);
 \end{tikzpicture}
-                \caption{Weergave gezochte routes}
+	\captionsetup{belowskip=0pt}
+                \captionsetup{justification=centering}
+    		\caption{\footnotesize Se realiza una diferencia simetrica entre lo que tiene $M$ y el camino de aumentacion obtenido $M=M \triangle P\{j-b,b-i,i-a,a-f,f-e\}$ obteniendo como resultado $M=\{a-f,b-i,c-g,d-h\}$.\\Las aristas incluidas en el apareamiento maximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
                 \label{fig:weather_activity}
             \end{subfigure}
         \end{minipage}
-    \caption{Many figures}
 \end{figure}
-
-
+\end{center}
 
 \newpage
 \nocite{*}
