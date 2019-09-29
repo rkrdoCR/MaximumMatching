@@ -480,7 +480,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \end{center}
 
 \subsection{Tercera iteración} \noindent
-Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, despues de la segunda iteracion, en este caso solo queda $E$. Cuando se hace la \textit{busqueda por anchura} se debe de transitar por las aristas que ya estan en el apareamiento maximo cuando la direccion es $W$ a $V$ y por las que no estan aun incluidas cuando es de $V$ a $W$. 
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{búsqueda por anchura}, después de la segunda iteracion, en este caso solo queda $E$. Cuando se hace la \textit{búsqueda por anchura} se debe de transitar por las aristas que ya están en el apareamiento máximo cuando la dirección es $W$ a $V$ y por las que no están aun incluidas cuando es de $V$ a $W$. 
 
 \begin{center}
 \begin{figure}[!htb]
@@ -498,12 +498,12 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
   		minimum size=6mm
     ]
     \begin{scope}[node every node/.style=state]
-		\node(e) [circle, fill=yellow] at (0, 5.10) {\small $e$};
-		\node(f) at (0, 4.25) {\small $f$};
-		\node(a) at (0, 3.40) {\small $a$};
-		\node(i) at (0 ,2.55) {\small $i$};
-		\node(b) at (0 ,1.70) {\small $b$};;
-		\node(j) [circle, fill=yellow] at (0 ,0.85) {\small $j$};
+		\node(e) [circle, fill=yellow] at (0, 5.00) {\small $e$};
+		\node(f) at (0, 4.15) {\small $f$};
+		\node(a) at (0, 3.30) {\small $a$};
+		\node(i) at (0 ,2.45) {\small $i$};
+		\node(b) at (0 ,1.60) {\small $b$};;
+		\node(j) [circle, fill=yellow] at (0 ,0.75) {\small $j$};
     \end{scope}
 		\path   (e) edge (f)
   	 	     	(f) edge (a)        
@@ -513,7 +513,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 	\end{tikzpicture}
 	\captionsetup{belowskip=0pt}
             \captionsetup{justification=centering}
-    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vertices libres de $V$, que en esta iteracion corresponde a $E$ como fuente, se almacenan los vértices libres del sext nivel en $F=\{j\}$}
+    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vértices libres de $V$, que en esta iteracion corresponde a $E$ como fuente, se almacenan los vértices libres del sexto nivel en $F=\{j\}$}
             \label{fig:weather_filter1}
         \end{subfigure} \\\\
         \begin{subfigure}[b]{.9\linewidth}
@@ -529,12 +529,12 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
   		minimum size=6mm
     ]
     \begin{scope}[node every node/.style=state]
-		\node(e) at (0, 5.10) {\small $e$};
-		\node(f) at (0, 4.25) {\small $f$};
-		\node(a) at (0, 3.40) {\small $a$};
-		\node(i) at (0 ,2.55) {\small $i$};
-		\node(b) at (0 ,1.70) {\small $b$};
-		\node(j) at (0 ,0.85) {\small $j$};
+		\node(e) at (0, 5.00) {\small $e$};
+		\node(f) at (0, 4.15) {\small $f$};
+		\node(a) at (0, 3.30) {\small $a$};
+		\node(i) at (0 ,2.45) {\small $i$};
+		\node(b) at (0 ,1.60) {\small $b$};
+		\node(j) at (0 ,0.75) {\small $j$};
     \end{scope}
 		\path   (e) edge [color=red, line width=1.3pt] (f)
   	 	     	(f) edge [color=red, line width=1.3pt] (a)        
@@ -544,7 +544,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 	\end{tikzpicture}
 	\captionsetup{belowskip=0pt}
             \captionsetup{justification=centering}
-    		\caption{\footnotesize Se aplica DFS usando $F=\{j\}$ como fuente para obtener el camino de aumentacion, por cada nodo en $F$ se debe eliminar las aristas y los vértices que estas conectan, asi como vertices y aristas huerfanos. El camino de aumentacion obtenido en esta iteracion es $P\{a-f,a-i,b-i,b-j,e-f\}$}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{j\}$ como fuente para obtener el camino de aumentacion, por cada nodo en $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentacion obtenido en esta iteracion es $P\{j-b,b-i,i-a,a-f,f-e\}$}
             \label{fig:weather_filter2}
         \end{subfigure} 
     \end{minipage}
@@ -584,7 +584,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \end{tikzpicture}
 	\captionsetup{belowskip=0pt}
                 \captionsetup{justification=centering}
-    		\caption{\footnotesize Se realiza una diferencia simetrica entre lo que tiene $M$ y el camino de aumentacion obtenido $M=M \triangle P\{j-b,b-i,i-a,a-f,f-e\}$ obteniendo como resultado $M=\{a-f,b-i,c-g,d-h\}$.\\Las aristas incluidas en el apareamiento maximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
+    		\caption{\footnotesize Se realiza una diferencia simétrica entre lo que tiene $M$ y el camino de aumentacion obtenido $M=M \triangle P\{j-b,b-i,i-a,a-f,f-e\}$ obteniendo como resultado $M=\{h-d,g-c,j-b,i-a,f-c\}$.\\Al finalizar esta iteracion no existen mas nodos libres por lo que se ha conseguido el objetivo y $M$ contiene ahora el \textit{apareamiento maximo de aristas}}
                 \label{fig:weather_activity}
             \end{subfigure}
         \end{minipage}
