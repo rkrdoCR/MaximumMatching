@@ -16,6 +16,7 @@
 \usepackage{etoolbox}
 
 \renewcommand{\familydefault}{\rmdefault}
+\renewcommand{\refname}{Referencias}
 
 \BeforeBeginEnvironment{figure}{\vskip-2ex}
 \AfterEndEnvironment{figure}{\vskip-2ex}
@@ -48,13 +49,13 @@
 
 \begin{section}{Descripción del problema} \noindent 
 Dado un grafo $G$ un pareo (matching) de aristas es un subconjunto de las aristas de dicho grafo que cumplen con la condición de ser independientes, es decir, que no tiene un vértice en común\cite{le2014algorithms}.\\\\
-Mas formalmente \cite{butenko2003maximum} define un pareo como un conjunto $M$ cuyos elementos son las aristas independientes de un grafo $G=(V,E)$. El problema de $apareamiento\; maximo\; de\; aristas$ consisten en encontrar un pareo con la mayor cardinalidad posible.
+Mas formalmente \cite{butenko2003maximum} define un pareo como un conjunto $M$ cuyos elementos son las aristas independientes de un grafo $G=(V,E)$. El problema de \textit{apareamiento máximo de aristas} consisten en encontrar un pareo con la mayor cardinalidad posible.
 
 \subsection{Cobertura mínima de vértices} \noindent 
-Una $cobertura\; de\; vertices\; V'$ es un subconjunto de $V$ tal que cada arista $(i,j) \in E$ tiene al menos un vértice en $V'$. El problema de cobertura mínima de vértices consiste en encontrar una cobertura de vértices con la mínima cardinalidad\cite{butenko2003maximum}.
+Una \textit{cobertura de vértices V'} es un subconjunto de $V$ tal que cada arista $(i,j) \in E$ tiene al menos un vértice en $V'$. El problema de cobertura mínima de vértices consiste en encontrar una cobertura de vértices con la mínima cardinalidad\cite{butenko2003maximum}.
 
 \subsection{Relación entre estos problemas} \noindent 
-El teorema de König relaciona estos dos problemas ya que en el se establece que la cardinalidad un apareamiento máximo de aristas en un grafo bipartito es igual a la cardinalidad de la cobertura mínima de vértices\cite{rizzi2000short}. 
+El teorema de König relaciona estos dos problemas ya que en él se establece que la cardinalidad un apareamiento máximo de aristas en un grafo bipartito es igual a la cardinalidad de la cobertura mínima de vértices\cite{rizzi2000short}. 
 
 \begin{center}
 	\begin{figure}[h]
@@ -62,17 +63,17 @@ El teorema de König relaciona estos dos problemas ya que en el se establece que
 		\captionsetup{justification=centering}
 		\includegraphics[width=0.50\textwidth]{images/Konigs-theorem-graph.png}
 		\caption*{
-			\footnotesize Figura 1. Grafo bipartito con apareamiento máximo de aristas \\y 		cobertura mínima de vértices, ambos de tamaño 6
+			\footnotesize Figura 1. Grafo bipartito con apareamiento máximo de aristas \\y 		cobertura mínima de vértices, ambos de tamaño 6. Tomado de \cite{wikipedia_2019}.
 		}
 	\end{figure}
 \end{center}
 \end{section}
 
 \section{Algoritmos} \noindent 
-A continuación se presentan dos algoritmos para resolver el problema de apareamiento máximo de aristas.
+A continuación, se presentan dos algoritmos para resolver el problema de apareamiento máximo de aristas.
 
 \subsection{Algoritmos voraz}
-El siguiente algoritmo encuentra aristas diferentes que no comparten vértices pero no necesariamente encuentra el apareamiento máximo de aristas.
+El siguiente algoritmo encuentra aristas diferentes que no comparten vértices, pero no necesariamente encuentra el apareamiento máximo de aristas.
 
 \begin{center}
 	\begin{algorithmic}[1]
@@ -142,10 +143,10 @@ El siguiente algoritmo encuentra aristas diferentes que no comparten vértices p
 	\end{tabularx}
 \end{figure}
 
-\noindent El ejemplo anterior demuestra como el algoritmo podría o no encontrar el apareamiento máximo de aristas dependiendo de cual arista escoge por iteración. Este algoritmo tiene una complejidad de $O(n^2)$ ya que necesita recorrer los conjuntos disjuntos de vértices determinando si estos están marcados como visitados o no, mas el ciclo externo.
+\noindent El ejemplo anterior demuestra como el algoritmo podría o no encontrar el apareamiento máximo de aristas dependiendo de cual arista escoge por iteración. Este algoritmo tiene una complejidad de $O(n^2)$ ya que necesita recorrer los conjuntos disjuntos de vértices determinando si estos están marcados como visitados o no, más el ciclo externo\cite{kavathekar}.
 
 \subsection{Algoritmo Hopcroft–Karp}
-Este algoritmo utiliza \textit{búsqueda por profundidad} para construir un grafo de niveles de manera alterna (se va construyendo el grafo visitando nodos de ambos subconjuntos) a partir de los vértices que no están conectados por una arista y hasta encontrar vértices ``libres". Este grafo luego se recorre con \textit{búsqueda a profundidad} a partir de los vértices que no están conectados por una arista con el fin de obtener un camino de aumentación (caminos mas cortos en el conjunto de vértices disjuntos).
+Este algoritmo utiliza \textit{búsqueda por profundidad} para construir un grafo de niveles de manera alterna (se va construyendo el grafo visitando nodos de ambos subconjuntos) a partir de los vértices que no están conectados por una arista y hasta encontrar vértices ``libres". Este grafo luego se recorre con \textit{búsqueda a profundidad} a partir de los vértices que no están conectados por una arista con el fin de obtener un camino de aumentación (caminos más cortos en el conjunto de vértices disjuntos). Su complejidad es $O(|E|(\sqrt{V}))$.
 
 \begin{center}
 	\begin{algorithmic}[1]
@@ -158,27 +159,27 @@ Este algoritmo utiliza \textit{búsqueda por profundidad} para construir un graf
 	\end{algorithmic}
 \end{center}
 
-\noindent La siguiente es una version mas descriptiva del algoritmo:
+\noindent La siguiente es una versión más descriptiva del algoritmo:
 
 \begin{center}
 	\begin{algorithmic}[1]
 		\STATE $M\gets \emptyset$
 		\REPEAT
 			\STATE \textit{búsqueda por anchura(B.F.S) para construir el grafo de niveles alternos con raíces en los vértices no apareados del conjunto V}
-			\STATE \textit{Aumentar M con el conjunto maximal de caminos mas cortos obtenido al aplicar búsqueda por profundidad(D.F.S) en el grafo de niveles}
-		\UNTIL {\textit{hasta que no haya mas caminos de aumentacion}}
+			\STATE \textit{Aumentar M con el conjunto maximal de caminos más cortos obtenido al aplicar búsqueda por profundidad(D.F.S) en el grafo de niveles}
+		\UNTIL {\textit{hasta que no haya más caminos de aumentación}}
 		\RETURN $M$
 	\end{algorithmic}
 \end{center}
 
 \section{Aplicaciones} \noindent
-\textbf{Red de flujos(Flow network)}. Una red de flujo es un grafo dirigido donde cada arista tiene capacidad y flujo. Se usan para modelar problemas que involucran el transporte de artículos usando una red de rutas con capacidades limitadas.\\\\
-\textbf{Modelado de enlaces químicos}. Mediante grafos o árboles donde los vértices representan átomos y las aristas la existencia de enlaces químicos.\\\\
-\textbf{Redes neuronales artificiales}. Son modelos computacionales inspirados en el cerebro humano. Se componen de una gran cantidad de nodos conectados, cada uno de los cuales realiza una operación matemática simple. La salida de cada nodo está determinada por esta operación, así como por un conjunto de parámetros que son específicos de ese nodo. Al conectar estos nodos juntos y establecer cuidadosamente sus parámetros, se pueden aprender y calcular funciones muy complejas.
+\textbf{Red de flujos(Flow network)}. Una red de flujo es un grafo dirigido donde cada arista tiene capacidad y flujo. Se usan para modelar problemas que involucran el transporte de artículos usando una red de rutas con capacidades limitadas\cite{brilliant}.\\\\
+\textbf{Modelado de enlaces químicos}. Mediante grafos o árboles donde los vértices representan átomos y las aristas la existencia de enlaces químicos\cite{brilliant}.\\\\
+\textbf{Redes neuronales artificiales}. Son modelos computacionales inspirados en el cerebro humano. Se componen de una gran cantidad de nodos conectados, cada uno de los cuales realiza una operación matemática simple. La salida de cada nodo está determinada por esta operación, así como por un conjunto de parámetros que son específicos de ese nodo. Al conectar estos nodos juntos y establecer cuidadosamente sus parámetros, se pueden aprender y calcular funciones muy complejas\cite{brilliant}.
 
 \section{Caso -- Hopcroft-Karp} \noindent
-Se toman los vértices libres de $V$ y se usan como fuente para hacer una \textit{búsqueda por anchura}. Esta búsqueda es especial en dos sentidos, primero en el nivel superior solo se usan aristas que no están en $M$, luego se alterna usando aristas de $M$ y las que están fuera de ese conjunto. En segundo lugar el recorrido se termina una vez que se alcanza un nivel en el que se localiza un vértice libre, que debido a la alternabilidad del recorrido, estará en el conjunto $W$.\\\\
-Luego se almacenan los vértices libres de $W$ en el conjunto $F$ que se utilizara en la siguiente operación que es la construcción de un camino de aumentacion utilizando \textit{búsqueda por profundidad}, que también es especial por que utiliza el mismo patrón de alternabilidad y ademas luego de que se usa un vértice o arista estos deben ser borrados, así como las aristas y vértices que queden huérfanos, esto garantiza que el conjunto de caminos que se obtienen es de vértices disjuntos.\\\\
+Se toman los vértices libres de $V$ y se usan como fuente para hacer una \textit{búsqueda por anchura}. Esta búsqueda es especial en dos sentidos, primero en el nivel superior solo se usan aristas que no están en $M$, luego se alterna usando aristas de $M$ y las que están fuera de ese conjunto. En segundo lugar, el recorrido se termina una vez que se alcanza un nivel en el que se localiza un vértice libre, que debido a la alternabilidad del recorrido, estará en el conjunto $W$.\\\\
+Luego se almacenan los vértices libres de $W$ en el conjunto $F$ que se utilizara en la siguiente operación que es la construcción de un camino de aumentación utilizando \textit{búsqueda por profundidad}, que también es especial por que utiliza el mismo patrón de alternabilidad y además luego de que se usa un vértice o arista estos deben ser borrados, así como las aristas y vértices que queden huérfanos, esto garantiza que el conjunto de caminos que se obtienen es de vértices disjuntos.\\\\
 El grafo a examinar es el siguiente:
 \begin{center}
 \begin{tikzpicture}[semithick]
@@ -219,7 +220,7 @@ $M=\emptyset$; $F=\emptyset$;
 \end{center}
 
 \subsection{Primera iteración} \noindent
-Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, como $M$ esta vacío en la primera iteracion esto implica todos.\\
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, como $M$ esta vacío en la primera iteración esto implica todos.\\
 \begin{center}
 \begin{figure}[!htb]
     \centering
@@ -302,7 +303,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \end{tikzpicture}
             \captionsetup{justification=centering}
 			\captionsetup{belowskip=0pt}
-    		\caption{\footnotesize Se aplica DFS usando $F=\{f,g,h,i,j\}$ como fuente para obtener el camino de aumentacion, por cada nodo procesado de $F$ se debe eliminar las aristas y los vértices que estas conectan, asi como vertices y aristas huerfanos. El camino de aumentacion obtenido es $P=\{f-a,g-b,h-d\}$}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{f,g,h,i,j\}$ como fuente para obtener el camino de aumentación, por cada nodo procesado de $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentación obtenido es $P=\{f-a,g-b,h-d\}$}
             \label{fig:weather_filter2}
         \end{subfigure} 
     \end{minipage}
@@ -342,19 +343,19 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \end{tikzpicture}
                 \captionsetup{justification=centering}
 			\captionsetup{belowskip=0pt}
-    		\caption{\footnotesize Después de la primera iteracion $M=\{f-a,g-b,h-d\}$. Las aristas incluidas hasta el momento en el apareamiento máximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
+    		\caption{\footnotesize Después de la primera iteración $M=\{f-a,g-b,h-d\}$. Las aristas incluidas hasta el momento en el apareamiento máximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
                 \label{fig:weather_activity}
             \end{subfigure}
         \end{minipage}
 \end{figure}
 \end{center}
 
-\noindent El resultado de la primera iteracion es:\\\\
+\noindent \textbf{El resultado de la primera iteración es:}\\\\
 $M = M \oplus \{f-a,g-b,h-d\}$\\
 $M = \{f-a,g-b,h-d\}$
 
 \subsection{Segunda iteración} \noindent
-Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{busqueda por anchura}, despues de la primera iteracion esos vertices son $C$ y $E$. Cuando se hace la \textit{busqueda por anchura} se debe de transitar por las aristas que ya estan en el apareamiento maximo cuando la direccion es $W$ a $V$ y por las que no estan aun incluidas cuando es de $V$ a $W$. 
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{búsqueda por anchura}, después de la primera iteración esos vértices son $C$ y $E$. Cuando se hace la \textit{búsqueda por anchura} se debe de transitar por las aristas que ya están en el apareamiento máximo cuando la dirección es $W$ a $V$ y por las que no están aún incluidas cuando es de $V$ a $W$. 
 
 \begin{center}
 \begin{figure}[!htb]
@@ -394,7 +395,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 	\end{tikzpicture}
 	\captionsetup{belowskip=0pt}
             \captionsetup{justification=centering}
-    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vertices libres de $V$, que en esta iteracion corresponden a $C$ y $E$ como fuente, se almacenan los vértices libres del cuarto nivel en $F=\{i,j\}$}
+    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vértices libres de $V$, que en esta iteración corresponden a $C$ y $E$ como fuente, se almacenan los vértices libres del cuarto nivel en $F=\{i,j\}$}
             \label{fig:weather_filter1}
         \end{subfigure} \\\\
         \begin{subfigure}[b]{.9\linewidth}
@@ -432,7 +433,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 	\end{tikzpicture}
 	\captionsetup{belowskip=0pt}
             \captionsetup{justification=centering}
-    		\caption{\footnotesize Se aplica DFS usando $F=\{i,j\}$ como fuente para obtener el camino de aumentacion, por cada nodo procesado de $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentacion obtenido en esta iteracion es $P\{i-b,b-g,g-c\}$}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{i,j\}$ como fuente para obtener el camino de aumentación, por cada nodo procesado de $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentación obtenido en esta iteración es $P\{i-b,b-g,g-c\}$}
             \label{fig:weather_filter2}
         \end{subfigure} 
     \end{minipage}
@@ -472,15 +473,14 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \end{tikzpicture}
 	\captionsetup{belowskip=0pt}
                 \captionsetup{justification=centering}
-    		\caption{\footnotesize Se realiza una diferencia simétrica entre lo que tiene $M$ y el camino de aumentacion obtenido $M=M \triangle P\{i-b,b-g,g-c\}$ obteniendo como resultado $M=\{f-a,h-d,i-b,g-c\}$.\\Las aristas incluidas hasta el momento en el apareamiento máximo se resaltan en rojo y los nodos libres se resaltan en amarillo.}
-                \label{fig:weather_activity}
+    		\caption{\footnotesize Se realiza una diferencia simétrica entre lo que tiene $M$ y el camino de aumentación obtenido $M=M \triangle P\{i-b,b-g,g-c\}$ obteniendo como resultado $M=\{f-a,h-d,i-b,g-c\}$.\\Las aristas incluidas hasta el momento en el apareamiento máximo se resaltan en rojo y los nodos libres se resaltan en amarillo.\\ \vspace{0.50cm} \normalsize \textbf{Resultado de la iteración: $M \oplus P = \{f-a,h-d,i-b,g-c\}$}}
             \end{subfigure}
         \end{minipage}
 \end{figure}
 \end{center}
 
 \subsection{Tercera iteración} \noindent
-Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{búsqueda por anchura}, después de la segunda iteracion, en este caso solo queda $E$. Cuando se hace la \textit{búsqueda por anchura} se debe de transitar por las aristas que ya están en el apareamiento máximo cuando la dirección es $W$ a $V$ y por las que no están aun incluidas cuando es de $V$ a $W$. 
+Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{búsqueda por anchura}, después de la segunda iteración, en este caso solo queda $E$. Cuando se hace la \textit{búsqueda por anchura} se debe de transitar por las aristas que ya están en el apareamiento máximo cuando la dirección es $W$ a $V$ y por las que no están aún incluidas cuando es de $V$ a $W$. 
 
 \begin{center}
 \begin{figure}[!htb]
@@ -513,7 +513,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 	\end{tikzpicture}
 	\captionsetup{belowskip=0pt}
             \captionsetup{justification=centering}
-    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vértices libres de $V$, que en esta iteracion corresponde a $E$ como fuente, se almacenan los vértices libres del sexto nivel en $F=\{j\}$}
+    		\caption{\footnotesize Grafo de niveles construido con BFS usando los vértices libres de $V$, que en esta iteración corresponde a $E$ como fuente, se almacenan los vértices libres del sexto nivel en $F=\{j\}$}
             \label{fig:weather_filter1}
         \end{subfigure} \\\\
         \begin{subfigure}[b]{.9\linewidth}
@@ -544,7 +544,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 	\end{tikzpicture}
 	\captionsetup{belowskip=0pt}
             \captionsetup{justification=centering}
-    		\caption{\footnotesize Se aplica DFS usando $F=\{j\}$ como fuente para obtener el camino de aumentacion, por cada nodo en $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentacion obtenido en esta iteracion es $P\{j-b,b-i,i-a,a-f,f-e\}$}
+    		\caption{\footnotesize Se aplica DFS usando $F=\{j\}$ como fuente para obtener el camino de aumentación, por cada nodo en $F$ se debe eliminar las aristas y los vértices que estas conectan, así como vértices y aristas huérfanos. El camino de aumentación obtenido en esta iteración es $P\{j-b,b-i,i-a,a-f,f-e\}$}
             \label{fig:weather_filter2}
         \end{subfigure} 
     \end{minipage}
@@ -584,7 +584,7 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \end{tikzpicture}
 	\captionsetup{belowskip=0pt}
                 \captionsetup{justification=centering}
-    		\caption{\footnotesize Se realiza una diferencia simétrica entre lo que tiene $M$ y el camino de aumentacion obtenido $M=M \triangle P\{j-b,b-i,i-a,a-f,f-e\}$ obteniendo como resultado $M=\{h-d,g-c,j-b,i-a,f-c\}$.\\Al finalizar esta iteracion no existen mas nodos libres por lo que se ha conseguido el objetivo y $M$ contiene ahora el \textit{apareamiento maximo de aristas}}
+    		\caption{\footnotesize Se realiza una diferencia simétrica entre lo que tiene $M$ y el camino de aumentación obtenido $M=M \triangle P\{j-b,b-i,i-a,a-f,f-e\}$ obteniendo como resultado $M=\{h-d,g-c,j-b,i-a,f-c\}$.\\Al finalizar esta iteración no existen más nodos libres por lo que se ha conseguido el objetivo y $M$ contiene ahora el \textit{apareamiento máximo de aristas}\\ \vspace{.50cm} \normalsize \textbf{Resultado de la iteración: $M \oplus P = \{h-d,g-c,j-b,i-a,f-c\}$}}
                 \label{fig:weather_activity}
             \end{subfigure}
         \end{minipage}
@@ -596,3 +596,4 @@ Se toman todos los vértices libres de $V$ como fuente para realizar la \textit{
 \bibliographystyle{ieeetr}
 \bibliography{bibliography/ref}
 \end{document}
+
